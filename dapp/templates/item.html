@@ -1,0 +1,11 @@
+{% for item in items %}
+<p> name: {{ item.name }} </p>
+<p> price: {{ item.price }} </p>
+<form action="/cart/" method="POST">
+<!--    {% csrf_token %}-->
+    <input type="text" name="item_name" value="{{ item.name }}">
+    <input type="number" name="item_qty" value="">
+    <button type="submit">Add to Cart</button>
+</form>
+<br>
+{% endfor %}

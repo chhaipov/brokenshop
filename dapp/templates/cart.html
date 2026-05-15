@@ -1,0 +1,22 @@
+<h1> Cart for user: {{ user }}</h1>
+<br>
+<h4> cart info </h4>
+{% for item in cart_items %}
+<p> Item: {{ item.item.name }}</p>
+<p> Item: {{ item.item.price }}</p>
+<p> Qty: {{ item.quantity }}</p>
+<p> Qty: {{ item.user }}</p>
+{% endfor %}
+
+<!--<h1> Cart for user: {{ user }}</h1>-->
+<!--<br>-->
+<!--<h4> cart info </h4>-->
+<!--{% for item in cart_items %}-->
+<!--<form action="/cart/" method="POST">-->
+<!--<input type="text" value="{{ item.item.name }}" name="name" >-->
+<!--<input type="text" value="{{ item.quantity }}" name="name" >-->
+<!--</form>-->
+<!--{% endfor %}-->
+
+
+
