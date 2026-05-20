@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse # import
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from .models import Item, CartItem
 
 
@@ -60,3 +61,38 @@ def login_view(request):
             return redirect("/hello/")
         else:
             return HttpResponse("Invalid login details given.")
+
+def register_view(request):
+    if request.method == "GET":
+        return render(request, "register.html")
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        email = request.POST.get("email")
+        User.objects.create_user(username=username, password=password, email=email)
+        return redirect("/login/")
+
+@login_required(login_url="/login/")
+def profile_view(request):
+    if request.method == "POST":
+        user = request.user # logined user
+
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        new_password = request.POST.get("new_password")
+
+        user.username = username
+        user.email = email
+        user.save()
+
+        if new_password:
+            user.set_password(new_password) # no old password check
+            user.save()
+            update_session_auth_hash(request, user) # keep user logged in
+
+        return redirect("/profile/")
+
+    user = request.user # logined user
+    context = {}
+    context["user"] = user
+    return render(request, "profile.html", context)

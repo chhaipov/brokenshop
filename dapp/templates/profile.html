@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Profile — DjangoTest{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4 card-title mb-3">Profile</h1>
+        <p>User id: {{ user.id }}</p>
+        <p>Username: {{ user.username }}</p>
+        <p>Email: {{ user.email }}</p>
+
+        <form action="/profile/" method="POST" class="mt-4">
+            {% csrf_token %}
+            <h2 class="h6">Edit profile</h2>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" class="form-control" id="email" name="email" value="{{ user.email }}">
+            </div>
+            <h2 class="h6">Change password</h2>
+            <div class="mb-3">
+                <label for="new_password" class="form-label">New password</label>
+                <input type="password" class="form-control" id="new_password" name="new_password">
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

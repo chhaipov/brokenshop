@@ -23,6 +23,8 @@ urlpatterns = [
     path('index/', views.index_view, name='index'),
     path('hello/', views.hello_view, name='hello'),
     path('login/', views.login_view, name='login'),
+    path('register/', views.register_view, name='register'),
+    path('profile/', views.profile_view, name='profile'),
     path("cart/", views.cart_view, name="cart"),
     path('item/', views.item_view, name="item"),
     # set view to be accessed by route

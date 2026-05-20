@@ -1,22 +1,46 @@
-<h1> Cart for user: {{ user }}</h1>
-<br>
-<h4> cart info </h4>
-{% for item in cart_items %}
-<p> Item: {{ item.item.name }}</p>
-<p> Item: {{ item.item.price }}</p>
-<p> Qty: {{ item.quantity }}</p>
-<p> Qty: {{ item.user }}</p>
-{% endfor %}
+{% extends "base.html" %}
 
-<!--<h1> Cart for user: {{ user }}</h1>-->
-<!--<br>-->
-<!--<h4> cart info </h4>-->
-<!--{% for item in cart_items %}-->
-<!--<form action="/cart/" method="POST">-->
-<!--<input type="text" value="{{ item.item.name }}" name="name" >-->
-<!--<input type="text" value="{{ item.quantity }}" name="name" >-->
-<!--</form>-->
-<!--{% endfor %}-->
+{% block title %}Cart — DjangoTest{% endblock %}
 
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h3 card-title">Cart for {{ user }}</h1>
+        <p class="text-muted mb-0">Items in your cart</p>
+    </div>
+</div>
 
-
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-white">
+        <h2 class="h5 mb-0">Cart details</h2>
+    </div>
+    <div class="card-body p-0">
+        {% if cart_items %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-light">
+                <tr>
+                    <th scope="col">Item</th>
+                    <th scope="col" class="text-end">Price</th>
+                    <th scope="col" class="text-end">Quantity</th>
+                    <th scope="col">User</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.item.name }}</td>
+                    <td class="text-end">{{ item.item.price }}</td>
+                    <td class="text-end">{{ item.quantity }}</td>
+                    <td>{{ item.user }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted p-3 mb-0">Your cart is empty.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

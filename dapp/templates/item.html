@@ -1,11 +1,35 @@
-{% for item in items %}
-<p> name: {{ item.name }} </p>
-<p> price: {{ item.price }} </p>
-<form action="/cart/" method="POST">
-<!--    {% csrf_token %}-->
-    <input type="text" name="item_name" value="{{ item.name }}">
-    <input type="number" name="item_qty" value="">
-    <button type="submit">Add to Cart</button>
-</form>
-<br>
-{% endfor %}
+{% extends "base.html" %}
+
+{% block title %}Items — DjangoTest{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4">Shop items</h1>
+
+{% if items %}
+<div class="row g-4">
+    {% for item in items %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h2 class="h5 card-title">{{ item.name }}</h2>
+                <p class="card-text text-muted mb-3">Price: <strong>{{ item.price }}</strong></p>
+                <form action="/cart/" method="POST" class="row g-2 align-items-end">
+                    <input type="hidden" name="item_name" value="{{ item.name }}">
+                    <div class="col-8">
+                        <label for="qty-{{ forloop.counter }}" class="form-label">Quantity</label>
+                        <input type="number" class="form-control" id="qty-{{ forloop.counter }}"
+                               name="item_qty" min="1" value="1" required>
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary w-100">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info" role="alert">No items available.</div>
+{% endif %}
+{% endblock %}

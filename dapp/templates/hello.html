@@ -1,9 +1,42 @@
-<h1>Hello {{ login_user  }}!</h1>
+{% extends "base.html" %}
 
-<h1> Your items in table </h1>
+{% block title %}Hello — DjangoTest{% endblock %}
 
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="card-title h3">Hello, {{ login_user }}!</h1>
+        <p class="text-muted mb-0">Your items are listed below.</p>
+    </div>
+</div>
 
-{% for item in items %}
-<h2> name = {{ item.name }}</h2>
-<h2> price = {{ item.price }}</h2>
-{% endfor %}
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-white">
+        <h2 class="h5 mb-0">Your items</h2>
+    </div>
+    <div class="card-body p-0">
+        {% if items %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-light">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col" class="text-end">Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td class="text-end">{{ item.price }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted p-3 mb-0">No items found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
