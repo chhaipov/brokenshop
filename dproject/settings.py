@@ -26,11 +26,18 @@ SECRET_KEY = 'django-insecure-0*jyfx(-amhqqaaq7gyvv%1#@$4p972@-z-ul-_r_5ml#-olak
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-SESSION_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SECURE = True
 
-CSRF_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SECURE = True
+# VULN (Insecure cookies): the session cookie is intentionally weakened.
+#  - HttpOnly off  -> JavaScript (and thus the XSS lab) can read document.cookie
+#  - Secure off    -> cookie is sent over plain HTTP and can be sniffed
+# Hardened target: SESSION_COOKIE_HTTPONLY = True, SESSION_COOKIE_SECURE = True,
+#                  SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_HTTPONLY = False
+SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 # Application definition
 
@@ -48,11 +55,25 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # VULN (CSRF): CsrfViewMiddleware disabled -> POST forms accept cross-site requests
     #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # VULN (Clickjacking): XFrameOptionsMiddleware disabled -> no X-Frame-Options header, page can be framed
+    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# VULN (Missing security headers): the settings below are intentionally left off/weak
+# so responses ship without HSTS, content-type-sniff protection, secure-cookie flags, etc.
+# A hardened deployment would set:
+#   SECURE_HSTS_SECONDS = 31536000
+#   SECURE_CONTENT_TYPE_NOSNIFF = True
+#   SECURE_SSL_REDIRECT = True
+#   SESSION_COOKIE_SECURE = True
+#   CSRF_COOKIE_SECURE = True
+#   X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = False
+SECURE_HSTS_SECONDS = 0
 
 ROOT_URLCONF = 'dproject.urls'
 

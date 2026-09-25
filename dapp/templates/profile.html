@@ -1,33 +1,47 @@
 {% extends "base.html" %}
 
-{% block title %}Profile — DjangoTest{% endblock %}
+{% block title %}Profile — Broken Shop{% endblock %}
 
 {% block content %}
-<div class="card shadow-sm">
-    <div class="card-body">
-        <h1 class="h4 card-title mb-3">Profile</h1>
-        <p>User id: {{ user.id }}</p>
-        <p>Username: {{ user.username }}</p>
-        <p>Email: {{ user.email }}</p>
+<h1 class="h3 mb-4"><i class="bi bi-person-circle text-primary"></i> My Profile</h1>
 
-        <form action="/profile/" method="POST" class="mt-4">
-            {% csrf_token %}
-            <h2 class="h6">Edit profile</h2>
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <div class="display-5 text-primary mb-2"><i class="bi bi-person-circle"></i></div>
+                <h2 class="h5 mb-0">{{ user.username }}</h2>
+                <p class="text-muted small">{{ user.email }}</p>
+                <span class="badge bg-light text-dark">User ID: {{ user.id }}</span>
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="text" class="form-control" id="email" name="email" value="{{ user.email }}">
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form action="/profile/" method="POST">
+                    {% csrf_token %}
+                    <h2 class="h6 text-muted text-uppercase mb-3">Account details</h2>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                    </div>
+
+                    <h2 class="h6 text-muted text-uppercase mb-3 mt-4">Change password</h2>
+                    <div class="mb-3">
+                        <label for="new_password" class="form-label">New password</label>
+                        <input type="password" class="form-control" id="new_password" name="new_password"
+                               placeholder="Leave blank to keep current">
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save changes</button>
+                </form>
             </div>
-            <h2 class="h6">Change password</h2>
-            <div class="mb-3">
-                <label for="new_password" class="form-label">New password</label>
-                <input type="password" class="form-control" id="new_password" name="new_password">
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-        </form>
+        </div>
     </div>
 </div>
 {% endblock %}
